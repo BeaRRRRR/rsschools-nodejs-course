@@ -19,6 +19,9 @@ export const createWriteStream = (output: PathLike): WriteStream =>
         : process.stdout
     ) as WriteStream
 
+/** I made this a higher order function, so that in the future it'll be easier to
+    implement new ciphering algorithms, just by passing another transform function. 
+*/
 export const createTransformStream = (transform: TransformFunction) =>
     through2(transform)
 

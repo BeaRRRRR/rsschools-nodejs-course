@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { createReadStream, createWriteStream, createTransformStream } from './util/streams';
-import caesarCypther from './util/caesar-cypher';
+import caesarCipther from './util/caesar-cipher';
 import { Action, Options } from './types';
 const program = new Command();
 
@@ -21,5 +21,5 @@ if (action !== Action.Decode && action !== Action.Encode) {
 if (!input) console.log(`Please input the data you want to ${action}`);
 
 createReadStream(input)
-    .pipe(createTransformStream(caesarCypther(action === Action.Decode ? -shift : shift)))
+    .pipe(createTransformStream(caesarCipther(action === Action.Decode ? -shift : shift)))
     .pipe(createWriteStream(output));

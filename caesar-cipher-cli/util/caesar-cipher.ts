@@ -4,6 +4,7 @@ import stream from 'stream';
 /**
    This function cypthers a char with caesar cypther
    But can also be used to decypther if shift is negative
+   @param {number} shift - The number of how many places to shift the char 
 */
 export default (shift: number) => {
     const transform: TransformFunction =
