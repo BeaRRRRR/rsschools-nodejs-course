@@ -7,13 +7,22 @@ npm install
 
 Then run with
 ```
-npm run -- your arguments
+npm start -- your arguments
 ```
 
 For example
 ```
-npm run -- -s 5 -a encode -i input.txt -o output.txt
+npm start -- -s 5 -a encode -i input.txt -o output.txt
 ```
+
+CLI tool accept 4 options (short alias and full name):
+
+1. **-a, --action**: an action encode/decode
+2. **-s, --shift**: a shift
+3. **-i, --input**: an input file
+4. **-o, --output**: an output file
+
+Action (encode/decode) and the shift are required.
 
 In case of any questions
 Discord: BeaRRRR#0845
