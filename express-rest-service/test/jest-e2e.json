@@ -5,7 +5,7 @@
         "<rootDir>"
     ],
     "testEnvironment": "node",
-    "testRegex": ".e2e-spec.js$",
+    "testRegex": ".test.js$",
     "transform": {
         "^.+\\.ts$": "ts-jest"
     },
