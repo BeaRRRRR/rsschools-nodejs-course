@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
-import { EntityNotFoundError } from '../errors/EntityNotFoundError';
+import { UserRepository } from './user.repository';
 import { TaskService } from '../task/task.service';
 import { User } from './intefraces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,19 +18,13 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
-    private readonly users: User[] = [
-        {
-            id: v4(),
-            name: 'mock',
-            login: 'mock',
-            password: 'mock'
-        },
-    ];
-
-    constructor(private readonly taskService: TaskService) { }
+    constructor(
+        private readonly taskService: TaskService,
+        private readonly userRepository: UserRepository
+    ) { }
 
     findAll(): GetUserDto[] {
-        return this.users.map(user => {
+        return this.userRepository.findAll().map(user => {
             // Deleting the password property using object descturing
             const { password, ...userWithoutPassword } = user;
             return userWithoutPassword;
@@ -38,32 +32,26 @@ export class UserService {
     }
 
     findById(id: string): GetUserDto {
-        const user: User | undefined = this.users.find(user => user.id === id);
-        if (!user) throw new EntityNotFoundError('The user does not exist');
-        const { password, ...userWithoutPassword } = user;
+        const { password, ...userWithoutPassword } = this.userRepository.findById(id);
         return userWithoutPassword;
     }
 
     create(createUserDto: CreateUserDto) {
+        // Not really sure if we should create the user with id there or in the repository
         const user: User = { id: v4(), ...createUserDto }
-        this.users.push(user)
-        const { password, ...userWithoutPassword } = user;
+        const { password, ...userWithoutPassword } = this.userRepository.create(user);
         return userWithoutPassword;
     }
 
     deleteById(id: string) {
-        // TODO: think of how to call findById() and get the user we need instead of just copying its code
-        const user: User | undefined = this.users.find(user => user.id === id);
-        if (!user) throw new EntityNotFoundError('The user does not exist');
-        this.users.splice(this.users.indexOf(user), 1);
+        this.userRepository.deleteById(id);
         this.taskService.unassignUserFromAllById(id);
     }
 
     update(id: string, updateUserDto: UpdateUserDto) {
-        const user: User | undefined = this.users.find(user => user.id === id);
-        if (!user) throw new EntityNotFoundError('The user does not exist');
+        const user: User = this.userRepository.findById(id);
         const updatedUser = { ...user, ...updateUserDto };
-        this.users.splice(this.users.indexOf(user), 1, updatedUser);
+        this.userRepository.update(user, updatedUser);
         return updatedUser;
     }
 

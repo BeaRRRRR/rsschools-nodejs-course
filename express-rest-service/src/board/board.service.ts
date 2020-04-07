@@ -1,44 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
-import { EntityNotFoundError } from '../errors/EntityNotFoundError';
+import { BoardRepository } from './board.repository';
 import { TaskService } from '../task/task.service';
 import { Board } from './intefraces/board.interface';
 import { GetBoardDto, CreateBoardDto, UpdateBoardDto } from './dto';
 
 @Injectable()
 export class BoardService {
-    private readonly boards: Board[] = [];
-
-    constructor(private readonly taskService: TaskService) { }
+    constructor(
+        private readonly boardRepository: BoardRepository,
+        private readonly taskService: TaskService
+    ) { }
 
     findAll(): GetBoardDto[] {
-        return this.boards;
+        return this.boardRepository.findAll();
     }
 
     findById(id: string): GetBoardDto {
-        const board: Board | undefined = this.boards.find(board => board.id === id);
-        if (!board) throw new EntityNotFoundError('The board with this id does not exist')
-        return board;
+        return this.boardRepository.findById(id);
     }
 
     create(createBoardDto: CreateBoardDto) {
         const board: Board = { id: v4(), ...createBoardDto };
-        this.boards.push(board);
+        this.boardRepository.create(board);
         return board;
     }
 
     deleteById(id: string) {
-        const board: Board | undefined = this.boards.find(board => board.id === id);
-        if (!board) throw new EntityNotFoundError('The board with this id does not exist')
-        this.boards.splice(this.boards.indexOf(board), 1);
+        this.boardRepository.deleteById(id);
         this.taskService.deleteAllByBoardId(id);
     }
 
-    update(id: string, updateBoardDto: UpdateBoardDto) {
-        const board: Board | undefined = this.boards.find(board => board.id === id);
-        if (!board) throw new EntityNotFoundError('The board with this id does not exist')
+    update(id: string, updateBoardDto: UpdateBoardDto): Board {
+        const board: Board = this.boardRepository.findById(id);
         const updatedBoard = { ...board, ...updateBoardDto }
-        this.boards.splice(this.boards.indexOf(board), 1, updatedBoard);
+        this.boardRepository.update(board, updatedBoard);
         return updatedBoard;
     }
 }
