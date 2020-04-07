@@ -4,6 +4,13 @@
 Я не использовал темплейтный репозиторий, но это и не обязательное требование.
 Он лишь РЕКОМЕНДОВАН для использования, но опять-же я писал на NestJs и этот темплейт мне не подходит!
 
+Код моего приложения, разделён на модули, как и в требованиях кросс-чека:
+ - Работа с запросом и ответом в *.controller.ts,
+ - Бизнес-логика в *.service.ts,
+ - Работа с хранилищем данных в *.repository.ts
+ - Модель для хранения в БД *.interface.ts
+ - Data Transfer Objects в *.dto.ts
+
 ## Install the dependencies 
 
 ```bash
@@ -22,6 +29,6 @@ $ npm run start
 $ npm run test
 ```
 
-In case of any questions
+Если есть какие-то вопросы, пожалуйста пишите:
 Discord: BeaRRRR#0845
 Telegram: https://t.me/mikhail_kedzel

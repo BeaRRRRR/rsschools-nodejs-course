@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
 import { BoardRepository } from './board.repository';
 import { TaskService } from '../task/task.service';
-import { Board } from './intefraces/board.interface';
+import { Board } from './intefraces';
 import { GetBoardDto, CreateBoardDto, UpdateBoardDto } from './dto';
 
 @Injectable()

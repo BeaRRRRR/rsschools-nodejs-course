@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
 import { EntityNotFoundError } from '../errors/EntityNotFoundError';
-import { User } from './intefraces/user.interface';
+import { User } from './intefraces';
 
 @Injectable()
 export class UserRepository {

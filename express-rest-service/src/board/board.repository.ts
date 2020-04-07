@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EntityNotFoundError } from '../errors/EntityNotFoundError';
-import { Board } from './intefraces/board.interface';
+import { Board } from './intefraces';
 
 @Injectable()
 export class BoardRepository {
