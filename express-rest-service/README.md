@@ -11,19 +11,19 @@
  - Модель для хранения в БД *.interface.ts
  - Data Transfer Objects в *.dto.ts
 
-## Install the dependencies 
+## Установите все зависимости
 
 ```bash
 $ npm install
 ```
 
-## Runn the app
+## В первой вкладке\ в первом окне в терминале - Запустите программу
 
 ```bash
 $ npm run start
 ```
 
-## Test
+## Во второй вкладке\ во втором окне термина - Запустите тесты
 
 ```bash
 $ npm run test
