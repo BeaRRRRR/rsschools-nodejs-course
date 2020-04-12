@@ -1,12 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { bootstrapLogger } from './util/logger';
 import { ErrorsInterceptor } from './errors.interceptor';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, { logger: bootstrapLogger });
 
-    app.useGlobalInterceptors(new ErrorsInterceptor())
+    app.useGlobalInterceptors(new ErrorsInterceptor(bootstrapLogger))
 
     const options = new DocumentBuilder()
         .setTitle('Express Rest Service')
@@ -20,3 +21,8 @@ async function bootstrap() {
     await app.listen(4000);
 }
 bootstrap();
+
+
+process.on('unhandledRejection', (reason) => {
+    bootstrapLogger.error(reason);
+});
