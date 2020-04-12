@@ -8,7 +8,6 @@ export class UserController {
 
     @Get('/')
     findAll(): GetUserDto[] {
-        Promise.reject(Error('Oops!'));
         return this.userService.findAll();
     }
 
