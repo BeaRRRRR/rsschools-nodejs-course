@@ -23,6 +23,13 @@ async function bootstrap() {
 bootstrap();
 
 
-process.on('unhandledRejection', (reason) => {
-    bootstrapLogger.error(reason);
-});
+process
+    .on('unhandledRejection', (reason: Error | any) => {
+        bootstrapLogger.error(`[Unhandled Rejection] ${reason.stack}`);
+    })
+    .on('uncaughtException', (err: Error) => {
+        bootstrapLogger.error(`[Unhandled Exception] ${err.stack}`);
+    });
+
+//Promise.reject(Error('Oops!'))
+//throw Error('Oops!')

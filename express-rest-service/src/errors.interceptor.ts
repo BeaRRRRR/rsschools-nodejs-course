@@ -17,7 +17,7 @@ export class ErrorsInterceptor implements NestInterceptor {
             .handle()
             .pipe(
                 catchError((error: Error) => {
-                    this.logger.error(`[ErrorsInterceptor] ${error} \n`);
+                    this.logger.error(`[ErrorsInterceptor] ${error.stack} \n`);
                     switch (error.constructor) {
                         case EntityNotFoundError:
                             return throwError(new NotFoundException(error.message));
