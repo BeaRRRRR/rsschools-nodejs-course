@@ -1,41 +1,31 @@
+import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { v4 } from 'uuid';
+import { InjectModel } from '@nestjs/mongoose';
 import { EntityNotFoundError } from '../errors/EntityNotFoundError';
-import { User } from './intefraces';
+import { UserModel } from './intefraces';
+import { CreateUserDto, UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserRepository {
-    private readonly users: User[] = [
-        {
-            id: v4(),
-            name: 'mock',
-            login: 'mock',
-            password: 'mock'
-        },
-    ];
+    constructor(@InjectModel('User') private userModel: Model<UserModel>) { }
 
-    findAll(): User[] {
-        return this.users;
+    findAll(): Promise<UserModel[]> {
+        return this.userModel.find().exec();
     }
 
-    findById(id: string): User {
-        const user: User | undefined = this.users.find(user => user.id === id);
-        if (!user) throw new EntityNotFoundError('The user does not exist');
-        return user;
+    findById(id: string): Promise<UserModel> {
+        return this.userModel.findById(id).orFail(new EntityNotFoundError()).exec();
     }
 
-    create(user: User): User {
-        this.users.push(user);
-        return user;
+    create(user: CreateUserDto): Promise<UserModel> {
+        return this.userModel.create(user);
     }
 
     deleteById(id: string) {
-        const user: User | undefined = this.findById(id);
-        if (!user) throw new EntityNotFoundError('The user does not exist');
-        this.users.splice(this.users.indexOf(user), 1);
+        this.userModel.findByIdAndRemove(id).orFail(new EntityNotFoundError()).exec();
     }
 
-    update(oldUser: User, newUser: User) {
-        this.users.splice(this.users.indexOf(oldUser), 1, newUser);
+    update(id: string, newUser: UpdateUserDto) {
+        return this.userModel.findByIdAndUpdate(id, { ...newUser }).orFail(new EntityNotFoundError()).exec();
     }
 }

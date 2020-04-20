@@ -7,18 +7,18 @@ export class BoardController {
     constructor(private boardService: BoardService) { }
 
     @Get()
-    findAll(): GetBoardDto[] {
+    findAll(): Promise<GetBoardDto[]> {
         return this.boardService.findAll();
     }
 
     @Get(':id')
-    findById(@Param('id') id: string): GetBoardDto {
+    findById(@Param('id') id: string): Promise<GetBoardDto> {
         return this.boardService.findById(id);
     }
 
     @Post()
     @HttpCode(200)
-    create(@Body() createUserDto: CreateBoardDto) {
+    create(@Body() createUserDto: CreateBoardDto): Promise<GetBoardDto> {
         return this.boardService.create(createUserDto);
     }
 
@@ -28,7 +28,7 @@ export class BoardController {
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateBoardDto) {
+    update(@Param('id') id: string, @Body() updateUserDto: UpdateBoardDto): Promise<GetBoardDto> {
         return this.boardService.update(id, updateUserDto);
     }
 

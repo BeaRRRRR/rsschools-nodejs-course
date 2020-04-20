@@ -5,7 +5,7 @@ import { EntityNotFoundError } from './errors/EntityNotFoundError';
 
 /**
    This is a project wide interceptor for handling basic, non-specific errors
-   It maps errors thrown from the service layer to their HTTP alternatives
+   It maps errors thrown from the service/repository layer to their HTTP alternatives
    e.g. maps EntityNotFoundError to NotFoundException
 */
 @Injectable()

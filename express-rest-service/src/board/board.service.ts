@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { v4 } from 'uuid';
 import { BoardRepository } from './board.repository';
 import { TaskService } from '../task/task.service';
 import { Board } from './intefraces';
@@ -12,29 +11,28 @@ export class BoardService {
         private readonly taskService: TaskService
     ) { }
 
-    findAll(): GetBoardDto[] {
-        return this.boardRepository.findAll();
+    async findAll(): Promise<GetBoardDto[]> {
+        const boards = await this.boardRepository.findAll();
+        return boards.map(({ _id, title, columns }) => ({ id: _id, title, columns }))
     }
 
-    findById(id: string): GetBoardDto {
-        return this.boardRepository.findById(id);
+    async findById(id: string): Promise<GetBoardDto> {
+        const { _id, title, columns } = await this.boardRepository.findById(id);
+        return { id: _id, title, columns };
     }
 
-    create(createBoardDto: CreateBoardDto) {
-        const board: Board = { id: v4(), ...createBoardDto };
-        this.boardRepository.create(board);
-        return board;
+    async create(createBoardDto: CreateBoardDto): Promise<GetBoardDto> {
+        const { _id, title, columns } = await this.boardRepository.create(createBoardDto);
+        return { id: _id, title, columns };
     }
 
-    deleteById(id: string) {
+    deleteById(id: string): void {
         this.boardRepository.deleteById(id);
         this.taskService.deleteAllByBoardId(id);
     }
 
-    update(id: string, updateBoardDto: UpdateBoardDto): Board {
-        const board: Board = this.boardRepository.findById(id);
-        const updatedBoard = { ...board, ...updateBoardDto }
-        this.boardRepository.update(board, updatedBoard);
-        return updatedBoard;
+    async update(id: string, updateBoardDto: UpdateBoardDto): Promise<Board> {
+        const { _id, title, columns } = await this.boardRepository.update(id, updateBoardDto);
+        return { id: _id, title, columns };
     }
 }

@@ -7,12 +7,12 @@ export class UserController {
     constructor(private userService: UserService) { }
 
     @Get('/')
-    findAll(): GetUserDto[] {
+    findAll(): Promise<GetUserDto[]> {
         return this.userService.findAll();
     }
 
     @Get(':id')
-    findById(@Param('id') id): GetUserDto {
+    findById(@Param('id') id): Promise<GetUserDto> {
         return this.userService.findById(id);
     }
 
