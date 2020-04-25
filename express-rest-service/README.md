@@ -26,6 +26,11 @@ $ npm run start
 $ npm run test
 ```
 
+или(для тестов проверяющих аунтефикацию)
+```bash
+$ npm run test:auth
+```
+
 Если есть какие-то вопросы, пожалуйста пишите:
 Discord: BeaRRRR#0845
 Telegram: https://t.me/mikhail_kedzel
