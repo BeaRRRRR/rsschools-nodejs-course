@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { TaskModule } from './task/task.module';
 import { BoardModule } from './board/board.module';
 import { LoggerMiddleware } from './logger.middleware';
+import { AuthModule } from './auth/auth.module';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ dotenv.config();
         BoardModule,
         rootLogger,
         MongooseModule.forRoot(process.env.MONGODB_URL),
+        AuthModule,
     ],
 
     controllers: [AppController],

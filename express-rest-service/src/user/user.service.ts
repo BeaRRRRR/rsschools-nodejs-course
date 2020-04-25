@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { TaskService } from '../task/task.service';
 import { GetUserDto, CreateUserDto, UpdateUserDto } from './dto';
+import { User } from './intefraces';
 
 
 @Injectable()
@@ -22,6 +23,10 @@ export class UserService {
     async findById(id: string): Promise<GetUserDto> {
         const { _id, name, login } = await this.userRepository.findById(id);
         return { id: _id, name, login };
+    }
+
+    async findByLoginAndPassword(login: string, password: string): Promise<User> {
+        return await this.userRepository.findByLoginAndPassword(login, password);
     }
 
     async create(createUserDto: CreateUserDto): Promise<GetUserDto> {

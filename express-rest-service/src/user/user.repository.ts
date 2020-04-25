@@ -1,6 +1,7 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import bcrypt from 'bcrypt';
 import { EntityNotFoundError } from '../errors/EntityNotFoundError';
 import { UserModel } from './intefraces';
 import { CreateUserDto, UpdateUserDto } from './dto';
@@ -17,7 +18,12 @@ export class UserRepository {
         return this.userModel.findById(id).orFail(new EntityNotFoundError()).exec();
     }
 
-    create(user: CreateUserDto): Promise<UserModel> {
+    async findByLoginAndPassword(login: string, password: string): Promise<UserModel> {
+        return this.userModel.findOne({ login, password }).orFail(new ForbiddenException()).exec();
+    }
+
+    async create(user: CreateUserDto): Promise<UserModel> {
+        user.password = await bcrypt.hash(user.password, 10)
         return this.userModel.create(user);
     }
 
