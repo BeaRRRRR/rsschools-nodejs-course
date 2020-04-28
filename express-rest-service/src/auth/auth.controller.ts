@@ -7,8 +7,10 @@ export class AuthController {
     constructor(private authService: AuthService) { }
 
     @Post()
-    async createJWTToken(@Body() createJWTTokenDto: CreateJWTTokenDto): Promise<string> {
-        return this.authService.createJWTToken(createJWTTokenDto);
+    async createJWTToken(@Body() createJWTTokenDto: CreateJWTTokenDto): Promise<Object> {
+        const token = await this.authService.createJWTToken(createJWTTokenDto);
+        console.log(token);
+        return { token };
     }
 
 }

@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, HttpCode, UseGuards } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { GetBoardDto, CreateBoardDto, UpdateBoardDto } from './dto';
+import { AuthGuard } from '../auth.guard';
 
 @Controller('boards')
+@UseGuards(new AuthGuard())
 export class BoardController {
     constructor(private boardService: BoardService) { }
 
