@@ -1,34 +1,20 @@
-# Важно
-Тесты не измененны, я использовал NestJs и там используется просто немного другая файловая структура,
-сами тесты идентичны тестам в репозитории школы.
-Я не использовал темплейтный репозиторий, но это и не обязательное требование.
-Он лишь РЕКОМЕНДОВАН для использования, но опять-же я писал на NestJs и этот темплейт мне не подходит!
+# General
 
-Код моего приложения, разделён на модули, как и в требованиях кросс-чека:
- - Работа с запросом и ответом в *.controller.ts,
- - Бизнес-логика в *.service.ts,
- - Работа с хранилищем данных в *.repository.ts
- - Модель для хранения в БД *.interface.ts
- - Data Transfer Objects в *.dto.ts
+The code is split into modules
+ - Http logic in *.controller.ts,
+ - Business login in *.service.ts,
+ - Database logic in *.repository.ts
+ - Database models in *.interface.ts
+ - Data Transfer Objects in *.dto.ts
 
-## Установите все зависимости
+## Install all the dependencies
 
 ```bash
 $ npm install
 ```
 
-## В первой вкладке\ в первом окне в терминале - Запустите программу
+## Run the program
 
 ```bash
 $ npm run start
 ```
-
-## Во второй вкладке\ во втором окне термина - Запустите тесты
-
-```bash
-$ npm run test
-```
-
-Если есть какие-то вопросы, пожалуйста пишите:
-Discord: BeaRRRR#0845
-Telegram: https://t.me/mikhail_kedzel
