@@ -1,32 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import { EntityNotFoundError } from '../errors/EntityNotFoundError';
-import { Board } from './intefraces';
+import { UpdateBoardDto, CreateBoardDto } from './dto';
+import { BoardModel } from './intefraces';
 
 @Injectable()
 export class BoardRepository {
-    private readonly boards: Board[] = [];
+    constructor(@InjectModel('Board') private boardModel: Model<BoardModel>) { }
 
-    findAll(): Board[] {
-        return this.boards;
+    findAll(): Promise<BoardModel[]> {
+        return this.boardModel.find().exec();
     }
 
-    findById(id: string): Board {
-        const board: Board | undefined = this.boards.find(board => board.id === id);
-        if (!board) throw new EntityNotFoundError('The board with this id does not exist')
-        return board;
+    findById(id: string): Promise<BoardModel> {
+        return this.boardModel.findById(id).orFail(new EntityNotFoundError()).exec();
     }
 
-    create(board: Board) {
-        this.boards.push(board)
+    create(board: CreateBoardDto): Promise<BoardModel> {
+        return this.boardModel.create(board);
     }
 
-    deleteById(id: string) {
-        const board: Board | undefined = this.boards.find(board => board.id === id);
-        if (!board) throw new EntityNotFoundError('The board with this id does not exist')
-        this.boards.splice(this.boards.indexOf(board), 1);
+    deleteById(id: string): void {
+        this.boardModel.findByIdAndRemove(id).orFail(new EntityNotFoundError()).exec();
     }
 
-    update(oldBoard: Board, newBoard: Board) {
-        this.boards.splice(this.boards.indexOf(oldBoard), 1, newBoard);
+    update(id: string, newBoard: UpdateBoardDto): Promise<BoardModel> {
+        return this.boardModel.findByIdAndUpdate(id, { ...newBoard }).orFail(new EntityNotFoundError()).exec();
     }
 }

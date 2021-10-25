@@ -14,7 +14,7 @@ export class TaskService {
 
     findById(id: string): GetTaskDto {
         const task: Task | undefined = this.tasks.find(task => task.id === id);
-        if (!task) throw new EntityNotFoundError('The task does not exist');
+        if (!task) throw new EntityNotFoundError();
         return task;
     }
 
@@ -39,13 +39,13 @@ export class TaskService {
     deleteById(id: string) {
         // TODO: think of how to call findById() and get the task we need instead of just copying its code
         const task: Task | undefined = this.tasks.find(task => task.id === id);
-        if (!task) throw new EntityNotFoundError('The task does not exist');
+        if (!task) throw new EntityNotFoundError();
         this.tasks.splice(this.tasks.indexOf(task), 1);
     }
 
     update(id: string, updateTaskDto: UpdateTaskDto) {
         const task: Task | undefined = this.tasks.find(task => task.id === id);
-        if (!task) throw new EntityNotFoundError('The task does not exist');
+        if (!task) throw new EntityNotFoundError();
         const updatedTask = { ...task, ...updateTaskDto };
         this.tasks.splice(this.tasks.indexOf(task), 1, updatedTask);
         return updatedTask;
